@@ -1,0 +1,26 @@
+# Environment files
+.env
+backend/.env
+
+# Laravel
+backend/vendor/
+backend/node_modules/
+backend/storage/*.key
+backend/.phpunit.result.cache
+backend/Homestead.json
+backend/Homestead.yaml
+backend/auth.json
+backend/.fleet
+backend/.idea
+backend/.vscode
+
+# Vue
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.DS_Store
+
+# Docker
+*.log
+.env.local
+.env

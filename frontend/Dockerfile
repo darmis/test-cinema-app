@@ -1,0 +1,19 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Copy application files
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Use entrypoint script
+ENTRYPOINT ["docker-entrypoint.sh"]
