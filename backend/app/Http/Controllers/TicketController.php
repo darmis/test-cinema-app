@@ -39,6 +39,19 @@ class TicketController extends Controller
         //
     }
 
+    public function checkTicket(string $uuid)
+    {
+        $ticket = Ticket::where('uuid', $uuid)->firstOrFail();
+
+        if (! $ticket->ticket_used) {
+            $ticket->update(['ticket_used' => true]);
+        }
+
+        return response()->json([
+            'ticket_used' => $ticket->ticket_used,
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

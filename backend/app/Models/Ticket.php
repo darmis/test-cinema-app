@@ -19,6 +19,7 @@ class Ticket extends Model
         'seat_id',
         'schedule_id',
         'ticket_used',
+        'uuid',
     ];
 
     /**
@@ -42,5 +43,13 @@ class Ticket extends Model
     public function seat(): BelongsTo
     {
         return $this->belongsTo(Seat::class);
+    }
+
+    /**
+     * @return BelongsTo<Schedule, $this>
+     */
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(Schedule::class);
     }
 }

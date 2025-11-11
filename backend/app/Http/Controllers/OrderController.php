@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
+use App\Jobs\GenerateTicketPdfAndSendEmail;
 use App\Models\Order;
 use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Ticket;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(StoreOrderRequest $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'schedule_id' => 'required|exists:schedules,id',
-            'seat_ids' => 'required|array|min:1',
-            'seat_ids.*' => 'exists:seats,id',
-        ]);
-
         $schedule = Schedule::findOrFail($request->schedule_id);
         $seats = Seat::whereIn('id', $request->seat_ids)->get();
         $totalPrice = $seats->sum('price');
@@ -36,8 +31,13 @@ class OrderController extends Controller
                 'seat_id' => $seat->id,
                 'schedule_id' => $request->schedule_id,
                 'ticket_used' => false,
+                'uuid' => (string) Str::uuid(),
             ]);
         }
+
+        $order->refresh();
+
+        GenerateTicketPdfAndSendEmail::dispatch($order);
 
         return response()->json([
             'order' => $order,
