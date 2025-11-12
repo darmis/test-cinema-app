@@ -11,13 +11,15 @@ cd test-cinema-app
 Start the Docker containers:
 docker compose up -d
 
+Wait for Installing dependencies inside container and migrations, seeders and everything being prepared.
+
+Start the queue worker:
+docker compose exec backend php artisan queue:work
+
 The application will be available at:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost
    - MailHog UI: http://localhost:8025
-
-Start the queue worker:
-docker compose exec backend php artisan queue:work
 
 # Database Schema
 
