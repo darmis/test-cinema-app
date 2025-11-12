@@ -33,13 +33,8 @@ echo "Redis is ready!"
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
 # Install Composer dependencies (always check, volume might be empty)
-if [ ! -f "vendor/autoload.php" ] || [ ! -d "vendor" ] || [ -z "$(ls -A vendor 2>/dev/null)" ]; then
+if [ ! -f "vendor/autoload.php" ]; then
     echo "Installing Composer dependencies..."
-    # Remove empty vendor directory if it exists (from volume mount)
-    if [ -d "vendor" ] && [ -z "$(ls -A vendor 2>/dev/null)" ]; then
-        echo "Removing empty vendor directory..."
-        rm -rf vendor
-    fi
     composer install --no-interaction --prefer-dist --optimize-autoloader
     # Fix vendor permissions
     chown -R www-data:www-data /var/www/html/vendor 2>/dev/null || true
