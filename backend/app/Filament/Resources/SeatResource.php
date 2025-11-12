@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SeatResource\Pages;
-use App\Filament\Resources\SeatResource\RelationManagers;
 use App\Models\Seat;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SeatResource extends Resource
 {
@@ -35,6 +32,7 @@ class SeatResource extends Resource
                 Forms\Components\TextInput::make('column')
                     ->required()
                     ->numeric(),
+                // @phpstan-ignore-next-line
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->suffix('Eur')
@@ -59,7 +57,7 @@ class SeatResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->formatStateUsing(fn ($state) => number_format($state / 100, 2) . ' Eur')
+                    ->formatStateUsing(fn ($state) => number_format($state / 100, 2).' Eur')
                     ->sortable(),
             ])
             ->filters([

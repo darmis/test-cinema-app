@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrderResource extends Resource
 {
@@ -30,6 +27,7 @@ class OrderResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                // @phpstan-ignore-next-line
                 Forms\Components\TextInput::make('total_price')
                     ->required()
                     ->numeric()
@@ -49,7 +47,7 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_price')
-                    ->formatStateUsing(fn ($state) => number_format($state / 100, 2) . ' Eur')
+                    ->formatStateUsing(fn ($state) => number_format($state / 100, 2).' Eur')
                     ->sortable(),
             ])
             ->filters([
